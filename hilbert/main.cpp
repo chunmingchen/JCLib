@@ -23,7 +23,7 @@ void show_idx_2d(int order)
             Point<2> p;
             p.v[0]=v[0];
             p.v[1] = v[1];
-            printf("[%d,%d]==>%d\n", p.v[0], p.v[1], Hilbert2d::index(p, order));
+            printf("[%d,%d]==>%d\n", p.v[0], p.v[1], Hilbert<2>::index(p, order));
         }
 }
 void show_idx_3d(int order)
@@ -39,7 +39,7 @@ void show_idx_3d(int order)
             p.v[0]=v[0];
             p.v[1] = v[1];
             p.v[2]=v[2];
-            printf("[%d,%d,%d]==>%d\n", p.v[0], p.v[1], p.v[2], Hilbert3d::index(p, order));
+            printf("[%d,%d,%d]==>%d\n", p.v[0], p.v[1], p.v[2], Hilbert<3>::index(p, order));
         }
 }
 
@@ -51,7 +51,7 @@ void show_pos_2d(int order)
     for (int i=0; i<n; i++)
     {
         Point<2> p;
-        p = Hilbert2d::pos(i, order);
+        p = Hilbert<2>::pos(i, order);
         printf("%d==>[%d,%d]\n", i,p.v[0],p.v[1]);
     }
 }
@@ -64,32 +64,10 @@ void show_pos_3d(int order)
     for (int i=0; i<n; i++)
     {
         Point<3> p;
-        p = Hilbert3d::pos(i, order);
+        p = Hilbert<3>::pos(i, order);
         printf("%d==>[%d,%d,%d]\n", i,p.v[0],p.v[1],p.v[2]);
     }
 }
-
-void verify_2d(int order)
-{
-    int w = 1<<order; // width
-    int n = w*w*w;
-    for (int i=0; i<n; i++)
-    {
-        Point<2> p;
-        // idx=>pos
-        p = Hilbert2d::pos(i, order);
-        // pos->idx
-        int idx = Hilbert2d::index(p, order);
-        // verify
-        if (idx !=i )
-        {
-            printf("Verify fail at 2D, order %d!\n", order);
-            return;
-        }
-    }
-    printf("Verify pass at 2D, order %d\n", order);
-}
-
 
 void verify_3d(int order)
 {
@@ -99,9 +77,9 @@ void verify_3d(int order)
     {
         Point<3> p;
         // idx=>pos
-        p = Hilbert3d::pos(i, order);
+        p = Hilbert<3>::pos(i, order);
         // pos->idx
-        int idx = Hilbert3d::index(p, order);
+        int idx = Hilbert<3>::index(p, order);
         // verify
         if (idx !=i )
         {
@@ -136,11 +114,7 @@ int main (int argc, const char * argv[])
     show_pos_3d(1);
     getchar();
     show_pos_3d(2);
-    
-    verify_2d(2);
-    verify_2d(3);
-    verify_2d(4);
-    
+
     verify_3d(1);
     verify_3d(2);
     verify_3d(3);
