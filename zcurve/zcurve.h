@@ -7,6 +7,7 @@
 namespace zcurve
 {
   /** Converts the given point to a zcurve index, assuming uniform size dims */
+  // L_max: length per dimension (must be power of 2)
   template <class Index,int_fast8_t D>
   Index convertPointToZ(std::array<Index,D> p,int_fast8_t L_max)  
   {

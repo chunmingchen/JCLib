@@ -1,3 +1,5 @@
+// more efficient method
+
 #include <vector>
 #include <algorithm>
 #include <math.h>

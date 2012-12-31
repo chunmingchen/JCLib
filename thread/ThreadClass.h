@@ -2,9 +2,9 @@
 #define THREAD_CLASS_H
 
 #ifdef WIN32
-#include "ThreadClass_win.h"
+#include "thread/ThreadClass_win.h"
 #else //unix
-#include "ThreadClass_unix.h"
+#include "thread/ThreadClass_unix.h"
 #endif
 
 namespace JCLib {

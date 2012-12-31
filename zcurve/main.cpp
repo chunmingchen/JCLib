@@ -14,7 +14,7 @@ void show(int L_max)
 		printf("%d => ", i);
 		for (int j=0; j<D; j++)
 			printf("%d ", p[j]);
-		printf(" => %d\n", convertPointToZ<int,D>(p, L_max));
+		printf(" => %d\n", convertPointToZ<int,D>(p, pow(2,L_max)));
 	}
 		
 }
@@ -23,9 +23,9 @@ void show(int L_max)
 int main(int argc, const char **argv)
 {
 int i;
-show<2>(2);
+show<2>(3);
 printf("\n");
-show<4>(1);
+show<4>(2);
 
 return 0;
 }

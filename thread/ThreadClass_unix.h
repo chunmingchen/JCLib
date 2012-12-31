@@ -44,7 +44,7 @@ namespace JCLib {
             show("** [Thread::Thread] this=%p",this);
             bThreadRunning = false; 
             bDestroyWhenStop = false;
-            thread = NULL;
+            thread = 0;
             locked = true;
             /*threadHandle = NULL;*/ 
         }
@@ -140,6 +140,7 @@ namespace JCLib {
             return true;
         }
 
+        // returns false if timeout
         inline bool wait(unsigned int msecs) {
             int r=0;
             pthread_mutex_lock( &_mutex );
@@ -164,7 +165,7 @@ namespace JCLib {
                 _signalled = false;
             
             pthread_mutex_unlock( &_mutex );
-            return true;
+            return r!=ETIMEDOUT;
         }
         
         inline bool set() {
@@ -240,16 +241,23 @@ namespace JCLib {
         inline long getValue() {return x;}
     };
 #endif    
-
-#define Sleep(us) { \
-            struct timespec ts;     \
-            ts.tv_sec = us/1000;    \
-            ts.tv_nsec= (us%1000)*1000; \
-            nanosleep(&ts, NULL);   \
-    }   
-    
+    inline void Sleep(long long us)
+    {
+    	struct timespec ts;
+		ts.tv_sec = us/1000;
+		ts.tv_nsec= (us%1000)*1000;
+		nanosleep(&ts, NULL);
+    }
 }; // namespace
 
+#if 0
+#define Sleep(us) { \
+		struct timespec ts;     \
+		ts.tv_sec = us/1000;    \
+		ts.tv_nsec= (us%1000)*1000; \
+		nanosleep(&ts, NULL);   \
+}
+#endif
 
 
 #endif
