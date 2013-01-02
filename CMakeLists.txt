@@ -5,6 +5,10 @@ cmake_minimum_required (VERSION 2.6)
 # settings
 SET(CMAKE_BUILD_TYPE Debug CACHE STRING "default to debug")
 
+##############################################
+# defaults for cmake_build_type
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "DEBUG;RELEASE")
+
 # debug type settings
 IF(CMAKE_BUILD_TYPE MATCHES DEBUG) 
     message("debug mode") 
@@ -14,11 +18,12 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -D_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # more flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -stdlib=libc++" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
 
 # platform settings
 IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-#	add_definitions( -stdlib=libc++ )
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+	add_definitions( -stdlib=libc++ )
 ENDIF()
 
 
