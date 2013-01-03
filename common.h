@@ -1,6 +1,8 @@
 // printf newline
 #include <stdarg.h>
 
+namespace jclib{
+
 inline void println( const char* format, ... )
 {
     va_list args;
@@ -9,3 +11,6 @@ inline void println( const char* format, ... )
     printf("\n");
     va_end( args );
 }
+
+
+};
