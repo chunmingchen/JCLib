@@ -9,6 +9,7 @@
 
 #ifndef QUEUE_IMPLEMENTS_H
 #define QUEUE_IMPLEMENTS_H
+#include <limits.h>
 
 class FifoQueue : public QueueI
 {
@@ -234,7 +235,7 @@ public:
     {
         if (pop_ready) return *top_it;
         
-        int min_dist;
+        int min_dist=INT_MAX;
         top_it = q.end();
         for (std::list<Job *>::iterator it = q.begin(); it != q.end(); ++it)
         {

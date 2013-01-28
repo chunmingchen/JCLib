@@ -4,6 +4,7 @@ cmake_minimum_required (VERSION 2.6)
 
 # settings
 SET(CMAKE_BUILD_TYPE Debug CACHE STRING "default to debug")
+option(use_profile "use thread profiler" OFF)
 
 ##############################################
 # defaults for cmake_build_type
@@ -27,6 +28,13 @@ IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 ENDIF()
 
 
+# use_profile
+if (use_profile)
+        add_definitions( -D_PROFILE )
+endif (use_profile)
+
+####################################
+
 # directories
 
 INCLUDE_DIRECTORIES(.)
@@ -39,6 +47,7 @@ list(APPEND SRC_FILES
 	)
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
+
 
 
 # output

@@ -1,9 +1,7 @@
 #include <map>
 #include "thread/QueueStage.h"
 
-#ifdef _PROFILE
-TLog *tlog = NULL;
-#endif
+
 using namespace std;
 
 unsigned QueueStage::QueueThread::execute()
