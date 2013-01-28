@@ -19,6 +19,7 @@ unsigned QueueStage::QueueThread::execute()
     /*
      * popJob: keeps pooling until terminated => returns false
      */
+    printf("Thread %s #%d started\n", parent->stageName, threadID);
     while( (job = parent->_popJob())!=NULL && !this->isTerminated())
     {	
         _computing = true;
