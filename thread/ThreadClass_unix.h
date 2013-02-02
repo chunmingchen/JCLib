@@ -223,6 +223,8 @@ namespace JCLib {
         inline long increment(long v) { return __sync_add_and_fetch(&x,v);}
         inline long decrement(long v) { return __sync_sub_and_fetch(&x,v);}
         inline long getValue() {return x;}
+        inline long operator+=(long v) { return increment(v); }
+        inline long operator-=(long v) { return decrement(v); }
     };
 #else
 #warning "Your gcc does not support atomic operation.  mutex is used"

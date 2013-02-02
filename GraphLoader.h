@@ -249,7 +249,7 @@ public:
     
     float weight(int u, int v)
     {
-        int i;
+        size_t i;
         for (i=0; i<edgeTableAry[u].size(); i++)
             if (edgeTableAry[u][i].neighborID==v)
                 return edgeTableAry[u][i].weight;
@@ -257,7 +257,7 @@ public:
     }
     EdgeWeight *getEdge(int u, int v)
     {
-        int i;
+    	size_t i;
         for (i=0; i<edgeTableAry[u].size(); i++)
             if (edgeTableAry[u][i].neighborID==v)
                 return &edgeTableAry[u][i];
@@ -301,7 +301,7 @@ public:
         int i;
         for (i=0; i<npart; i++)
         {
-            int j;
+        	size_t j;
             for (j=0; j<edgeTableAry[i].size(); j++)
             {
                 EdgeWeight &ew = edgeTableAry[i][j];
@@ -347,7 +347,7 @@ public:
     {
         for (int i=0; i<npart; i++)
         {
-            for (int j=0; j<edgeTableAry[i].size(); j++)
+            for (size_t j=0; j<edgeTableAry[i].size(); j++)
                 edgeTableAry[i][j].weight /= div;
             vertexTotalWeight[i] /= div;
         }
@@ -355,7 +355,7 @@ public:
     void operator*=(const float mul)
     {
         for (int i=0; i<npart; i++) {
-            for (int j=0; j<edgeTableAry[i].size(); j++)
+            for (size_t j=0; j<edgeTableAry[i].size(); j++)
                 edgeTableAry[i][j].weight *= mul;
             vertexTotalWeight[i] *= mul;
         }
@@ -423,11 +423,11 @@ public:
     
     inline void propagate_add(std::vector<long double> &x)
     {
-        int i,j;
+        int i;
         std::vector<long double> y(npart,0);
         
         for (i=0; i<npart; i++)
-            for (j=0; j<edgeTableAry[i].size(); j++)
+            for (size_t j=0; j<edgeTableAry[i].size(); j++)
             {
                 EdgeWeight &ew = edgeTableAry[i][j];
                 y[ew.neighborID]+=x[i]*ew.weight;
@@ -449,7 +449,7 @@ public:
         std::vector< double> sum(npart, 1.);
         std::vector< double> y(npart,0);
         int c;
-        int i,j;
+        int i;
         for (c=0; c<100; c++)
         {
             if (c%10==0)
@@ -459,7 +459,7 @@ public:
             // propagate
             for (i=0; i<npart; i++) 
             {
-                for (j=0; j<edgeTableAry[i].size(); j++)
+                for (size_t j=0; j<edgeTableAry[i].size(); j++)
                 {
                     EdgeWeight &ew = edgeTableAry[i][j];
                     y[ew.neighborID]+=x[i]*ew.weight;
@@ -487,7 +487,7 @@ public:
         // times original edge
         
         for (i=0; i<npart; i++)
-            for (j=0; j<edgeTableAry[i].size(); j++)
+            for (size_t j=0; j<edgeTableAry[i].size(); j++)
             {
                 EdgeWeight &ew = edgeTableAry[i][j];
                 ew.weight = (ew.weight*sum[i]*32768);

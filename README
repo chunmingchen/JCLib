@@ -1,5 +1,11 @@
 !! Don't forget to 'make install' after build!!!
 
+version 0.2
+2/2/2013
+add PROFILE cmake build type
+AtomicLong now supports +=, -=
+.mhd (raw description file) header saver
+
 version 0.1
 12/30/2012
 works with flowvis

@@ -3,23 +3,18 @@ project (jclib)
 cmake_minimum_required (VERSION 2.6)
 
 # settings
-SET(CMAKE_BUILD_TYPE Debug CACHE STRING "default to debug")
-option(use_profile "use thread profiler" OFF)
 
 ##############################################
 # defaults for cmake_build_type
-set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "DEBUG;RELEASE")
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "DEBUG;RELEASE;PROFILE")
+
 
 # debug type settings
-IF(CMAKE_BUILD_TYPE MATCHES DEBUG) 
-    message("debug mode") 
-ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG) 
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -D_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+set(CMAKE_CXX_FLAGS_PROFILE "${CMAKE_CXX_FLAGS_PROFILE} -D_PROFILE")
 
-# more flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
 
 # platform settings
 IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -27,11 +22,6 @@ IF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	add_definitions( -stdlib=libc++ )
 ENDIF()
 
-
-# use_profile
-if (use_profile)
-        add_definitions( -D_PROFILE )
-endif (use_profile)
 
 ####################################
 
@@ -44,6 +34,7 @@ list(APPEND SRC_FILES
 	system/path.cpp
 	thread/QueueStage.cpp
 	thread/tlogDefs.cpp
+	mhd.cpp
 	)
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
@@ -51,11 +42,11 @@ add_library(${PROJECT_NAME} ${SRC_FILES})
 
 
 # output
-
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	DEBUG_OUTPUT_NAME "${PROJECT_NAME}d"
-	RELEASE_OUTPUT_NAME "${PROJECT_NAME}"
-	)
+	PROFILE_OUTPUT_NAME "${PROJECT_NAME}p"
+        DEBUG_OUTPUT_NAME "${PROJECT_NAME}d"
+        RELEASE_OUTPUT_NAME "${PROJECT_NAME}"
+        )
 
 install(
 	TARGETS 	${PROJECT_NAME} 
