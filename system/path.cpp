@@ -33,7 +33,7 @@ bool isFilenameOnly(const string &filename)
 
 string getFileExtension(const string &filename)
 {
-        size_t i = filename.find_first_of('.');
+        size_t i = filename.find_last_of('.');
         return filename.substr(i+1);
 }
 
