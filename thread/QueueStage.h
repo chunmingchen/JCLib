@@ -161,7 +161,9 @@ public:
 
 	inline void setNextStage(QueueStage *nextStage_) {nextStage = nextStage_;}
 
+	// start or continue stopped threads
 	void startThreads();
+
 	//inline const list<Job *> &getQueue() {return *queue;}
 
     inline int getQueueSize() {

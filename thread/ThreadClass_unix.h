@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <sys/errno.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #ifndef show
 #ifdef __DEBUG

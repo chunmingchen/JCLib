@@ -201,10 +201,13 @@ public:
     
     GraphLoader(int npart_, EdgeTable *edgeTableAry_=NULL) {
         npart = npart_;
-        if (edgeTableAry_==NULL)
+        if (edgeTableAry_==NULL) {
             edgeTableAry = new EdgeTable[npart_]; // empty graph
-        else
+            vertexTotalWeight = new float[npart_];
+        } else {
             edgeTableAry = edgeTableAry_;
+            vertexTotalWeight = new float[npart_];
+        }
         init_nedge();
     }
     GraphLoader(const char *filename) {
@@ -420,6 +423,27 @@ public:
         fclose(fp);
     }
     
+    void saveFile_metis(const char *filename)
+    {
+    	FILE *fp = NULL;
+    	printf("Writing file: %s in metis format\n", filename);
+    	fp = fopen(filename, "wt");
+    	if (!fp) throw std::string("Cannot save file:") + filename;
+
+    	// start
+    	fprintf(fp, "%d %d 1\n", npart, nedge); //vs es weight-associated-edge
+    	for (int i=0; i<npart; i++)
+    	{
+    		for (int j=0; j<(int)edgeTableAry[i].size(); j++)
+    		{
+    			EdgeWeight &ew = edgeTableAry[i][j];
+    			fprintf(fp, "%d %lg ", ew.neighborID+1, ew.weight);
+    		}
+    		fprintf(fp, "\n");
+    	}
+    	fclose(fp);
+    }
+
     
     inline void propagate_add(std::vector<long double> &x)
     {
