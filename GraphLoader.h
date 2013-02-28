@@ -274,6 +274,7 @@ public:
             ew.neighborID = v;
             ew.weight = weight;
             edgeTableAry[u].push_back(ew);
+            nedge++;
         }else
             pew->weight = weight;
     }
@@ -285,6 +286,7 @@ public:
             ew.neighborID = v;
             ew.weight = weight;
             edgeTableAry[u].push_back(ew);
+            nedge++;
         }else
             pew->weight += weight;
     }
@@ -367,6 +369,7 @@ public:
     
     void saveFile_bin(const char *filename)
     {
+    	init_nedge();
         // Save
         FILE *fp=NULL;
         printf("Writing file: %s\n", filename);
@@ -404,6 +407,7 @@ public:
     
     void saveFile_rmf(const char *filename)
     {
+    	init_nedge();
         // Save
         FILE *fp=NULL;
         printf("Writing file: %s\n", filename);
