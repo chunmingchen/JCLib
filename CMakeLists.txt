@@ -32,6 +32,7 @@ INCLUDE_DIRECTORIES(.)
 list(APPEND SRC_FILES
 	system/cmd_arg_reader.cpp
 	system/path.cpp
+	system/ui.cpp
 	thread/QueueStage.cpp
 	thread/tlogDefs.cpp
 	mhd.cpp

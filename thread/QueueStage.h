@@ -50,6 +50,8 @@ public:
 	}
 	inline bool isFinished() { return _bFinished; }
 	inline void waitFinish() {	evtAllFinished.wait(); }
+	// wait or return in msec. return true if finished
+	inline bool waitFinish(unsigned int msec) { return evtAllFinished.wait(msec); }
     virtual void restart() {
 		_bFinished = false; 
 		evtAllFinished.reset();

@@ -70,7 +70,7 @@ Job *QueueStage::_popJob()
 #endif
         
 #ifdef _DEBUG
-        printf("[Stage %s: Waiting for job...]\n", stageName);
+//        printf("[Stage %s: Waiting for job...]\n", stageName);
 #endif
         bool r = evtJobPushed.wait(10000);
 
