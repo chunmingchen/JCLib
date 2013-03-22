@@ -7,7 +7,7 @@ cmake_minimum_required (VERSION 2.6)
 ##############################################
 # defaults for cmake_build_type
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "DEBUG;RELEASE;PROFILE")
-
+option(use_gprof "Use GProf profiling" OFF)
 
 # debug type settings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
@@ -40,6 +40,10 @@ list(APPEND SRC_FILES
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
 
+# Profiling
+if (use_gprof)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+endif (use_gprof)
 
 
 # output
