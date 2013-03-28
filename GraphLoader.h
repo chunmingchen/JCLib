@@ -429,22 +429,29 @@ public:
     
     void saveFile_metis(const char *filename)
     {
+    	convert_undirected_graph();
+
     	FILE *fp = NULL;
     	printf("Writing file: %s in metis format\n", filename);
     	fp = fopen(filename, "wt");
     	if (!fp) throw std::string("Cannot save file:") + filename;
 
     	// start
-    	fprintf(fp, "%d %d 1\n", npart, nedge); //vs es weight-associated-edge
+    	fprintf(fp, "%d %d 1\n", npart, nedge/2); //vs es(non-directed) weight-associated-edge
+    	int edgecount=0;
     	for (int i=0; i<npart; i++)
     	{
     		for (int j=0; j<(int)edgeTableAry[i].size(); j++)
     		{
     			EdgeWeight &ew = edgeTableAry[i][j];
     			fprintf(fp, "%d %lg ", ew.neighborID+1, ew.weight);
+    			//if (this->getEdge(ew.neighborID, i)!=NULL)
+    			//	printf("Duplicated undirected edge: %d<->%d\n", ew.neighborID, i);
+    			edgecount++;
     		}
     		fprintf(fp, "\n");
     	}
+    	printf("edgecounts=%d\n", edgecount);
     	fclose(fp);
     }
 
@@ -523,7 +530,37 @@ public:
     
     }
     
-    
+
+    void convert_undirected_graph()
+    {
+    	printf("converting to undirected graph...\n");
+    	EdgeTable *newEdgeTableAry = new EdgeTable[this->npart];
+        int i;
+        int count_nedge=0;
+        for (i=0; i<this->npart; i++)
+        {
+            for (size_t e = 0; e<this->edgeTableAry[i].size(); e++)
+            {
+                EdgeWeight &ew = this->edgeTableAry[i][e];
+                int u = i;
+                int v = ew.neighborID;
+                if (v <= u) continue; // skip previous edges or self-connected edges
+
+                float newweight = ew.weight + this->weight(v, u);
+                EdgeWeight newEw;
+                newEw.neighborID = v;
+                newEw.weight = newweight;
+                newEdgeTableAry[u].push_back(newEw);
+                newEw.neighborID = u;
+                newEdgeTableAry[v].push_back(newEw);
+                count_nedge+=2;
+            }
+        }
+        delete[] edgeTableAry;
+        edgeTableAry = newEdgeTableAry;
+        this->nedge = count_nedge;
+    }
+
 };
 
 #endif

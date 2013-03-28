@@ -48,6 +48,18 @@ public:
     virtual const char * getName() { return "Priority"; }
 };
 
+class SimpleTimePriorityQueue : public PriorityQueue
+{
+	int blocksPerTime, npart;
+public:
+    SimpleTimePriorityQueue(int npart_, int blocksPerTime_): npart(npart_), blocksPerTime(blocksPerTime_) {}
+    virtual void push(Job *obj) {
+    	obj->forder= (obj->partID / blocksPerTime) ;
+    	q.push(obj);
+    }
+    virtual const char * getName() { return "SimpleTimePriority"; }
+};
+
 class TimePriorityQueue : public PriorityQueue
 {
 	int blocksPerTime, npart;
@@ -58,6 +70,18 @@ public:
     	q.push(obj);
     }
     virtual const char * getName() { return "TimePriority"; }
+};
+
+class TimeInvPriorityQueue : public PriorityQueue
+{
+	int blocksPerTime, npart;
+public:
+    TimeInvPriorityQueue(int npart_, int blocksPerTime_): npart(npart_), blocksPerTime(blocksPerTime_) {}
+    virtual void push(Job *obj) {
+    	obj->forder=(npart -1 - obj->forder) + (obj->partID / blocksPerTime) * npart;
+    	q.push(obj);
+    }
+    virtual const char * getName() { return "TimeInvPriority"; }
 };
 
 

@@ -166,9 +166,8 @@ public:
 	// start or continue stopped threads
 	void startThreads();
 
-	//inline const list<Job *> &getQueue() {return *queue;}
-
-    inline int getQueueSize() {
+	// for probing
+	inline int getQueueSize() {
         //queueMutex.lock();
         int qs = queue->size();
         //queueMutex.unlock();
