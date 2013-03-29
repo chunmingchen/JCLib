@@ -367,6 +367,17 @@ public:
     }
     
     
+
+    void save(const char *filename) {
+        assert(filename);
+        if (strcmp(".rmf", filename+(strlen(filename)-4))==0)
+            saveFile_rmf(filename);
+       else if (strcmp(".metis", filename+(strlen(filename)-6))==0)
+            saveFile_metis(filename);
+       else
+    	   saveFile_bin(filename);
+    }
+
     void saveFile_bin(const char *filename)
     {
     	init_nedge();
@@ -429,6 +440,8 @@ public:
     
     void saveFile_metis(const char *filename)
     {
+    	init_nedge();
+
     	convert_undirected_graph();
 
     	FILE *fp = NULL;
