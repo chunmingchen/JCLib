@@ -20,7 +20,7 @@ unsigned QueueStage::QueueThread::execute()
      * popJob: keeps pooling until terminated => returns false
      */
     printf("Thread %s #%d started\n", parent->stageName, threadID);
-    while( (job = parent->_popJob())!=NULL && !this->isTerminated())
+    while( (job = parent->_popJob(this))!=NULL && !this->isTerminated())
     {	
         _computing = true;
         jobOutList.clear();
@@ -52,7 +52,7 @@ unsigned QueueStage::QueueThread::execute()
 }
 
 //////////////////////////////////////////////
-Job *QueueStage::_popJob()
+Job *QueueStage::_popJob(QueueThread *caller)
 {
     if (control->isFinished())
         return NULL;
@@ -87,7 +87,7 @@ Job *QueueStage::_popJob()
         queueMutex.lock();
     }
     t.end();
-    control->myWaitTime[(long)pthread_self()]+=t.getElapsedUS();
+    caller->totalWaitTime += t.getElapsedUS();
     
     // return new seed group
     Job *job = queue->pop();

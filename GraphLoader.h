@@ -24,6 +24,8 @@ struct EdgeWeight{
     float weight;
      bool operator<(const EdgeWeight &e) const {return weight<e.weight;}
     bool operator>(const EdgeWeight &e) const {return weight>e.weight;}
+    EdgeWeight(int neighborID_, float weight_): neighborID(neighborID_), weight(weight_) {}
+    EdgeWeight() {}
 };
 
 typedef std::vector<EdgeWeight> EdgeTable;

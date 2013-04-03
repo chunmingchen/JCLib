@@ -31,7 +31,7 @@ protected:
 public:
 	bool keepThreadAfterFinish;
 
-    map<long, long long> myWaitTime;
+    map<long, long long> myWaitTime; //deprecated
 	MTControl() : _bFinished(false), keepThreadAfterFinish(false)
     {
 #ifdef _PROFILE
@@ -75,8 +75,10 @@ class QueueStage
         unsigned execute();
         
     public:
+        long long totalWaitTime;
+
         QueueThread(int threadID_, QueueStage *parent_, const char *stageName_)
-        : threadID(threadID_), parent(parent_), _computing(false) {}
+        : threadID(threadID_), parent(parent_), _computing(false), totalWaitTime(0) {}
 
         inline bool isComputing() {return _computing;}
     };
@@ -94,7 +96,7 @@ private:
 
 	Event evtJobPushed;
 
-	Job *_popJob();
+	Job *_popJob(QueueThread *caller);
 
 	// get job from previous stage
 	void _pushJob( std::list<Job *> &jobList );
@@ -148,7 +150,7 @@ public:
 #endif
 	}
 
-	void initJobs(std::list<Job *> &jobList)
+	inline void initJobs(std::list<Job *> &jobList)
 	{
 		_pushJob( jobList );
 	}
@@ -199,6 +201,12 @@ public:
     	int i;
     	for (i=0; i<threads; i++)
     		threadArray[i]->stopThread(wait);
+    }
+
+    inline long long getTotalWaitTime(int id) {
+    	assert(id<threads && id>=0);
+    	return threadArray[id]->totalWaitTime;
+   		//printf("Stage %s: Total wait time = %lld\n", stageName, threadArray[i]->totalWaitTime);
     }
 };
 
