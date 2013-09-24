@@ -15,13 +15,15 @@ class FifoQueue : public QueueI
 {
 protected:
     std::list<Job *> q;
+    size_t length; // list<>::size() is not a good implementation
 public:
+    FifoQueue(): length(0) {}
     virtual bool empty() { return q.empty(); }
-    virtual size_t size() {return q.size(); }
+    virtual size_t size() {return length; }
     //virtual Job *top() { return q.front(); }
-    virtual void push(Job *obj) { q.push_back(obj); }
-    virtual Job *pop() { Job *job = (Job *)q.front(); q.pop_front(); return job;}
-    virtual void push(std::list<Job *> &q1) { q.splice(q.end(), q1); }
+    virtual void push(Job *obj) { q.push_back(obj); length++; }
+    virtual Job *pop() { Job *job = (Job *)q.front(); q.pop_front(); length--; return job;}
+    virtual void push(std::list<Job *> &q1) { length+=q1.size(); q.splice(q.end(), q1);  }
     virtual const char * getName() {return "FIFO";}
 };
 
@@ -246,7 +248,7 @@ public:
 #define CACHE_DEPTH 10
 class PrefetchQueue : public FifoQueue
 {
-    std::list<Job *> q;
+    //std::list<Job *> q;
     int mru[CACHE_DEPTH]; // most recently used
     int mru_replace_idx;
     std::list<Job *>::iterator top_it;
