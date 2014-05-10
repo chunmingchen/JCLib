@@ -11,19 +11,23 @@
 #define QUEUE_IMPLEMENTS_H
 #include <limits.h>
 
+
 class FifoQueue : public QueueI
 {
 protected:
     std::list<Job *> q;
+    size_t length; // list<>::size() is not a good implementation
 public:
+    FifoQueue(): length(0) {}
     virtual bool empty() { return q.empty(); }
-    virtual size_t size() {return q.size(); }
+    virtual size_t size() {return length; }
     //virtual Job *top() { return q.front(); }
-    virtual void push(Job *obj) { q.push_back(obj); }
-    virtual Job *pop() { Job *job = (Job *)q.front(); q.pop_front(); return job;}
-    virtual void push(std::list<Job *> &q1) { q.splice(q.end(), q1); }
+    virtual void push(Job *obj) { q.push_back(obj); length++; }
+    virtual Job *pop() { Job *job = (Job *)q.front(); q.pop_front(); length--; return job;}
+    virtual void push(std::list<Job *> &q1) { length+=q1.size(); q.splice(q.end(), q1);  }
     virtual const char * getName() {return "FIFO";}
 };
+
 
 // smaller order, higher priority
 struct FileOrderComparer {
@@ -33,13 +37,16 @@ class PriorityQueue : public QueueI
 {
 protected:
     std::priority_queue<Job *, std::vector<Job *>, FileOrderComparer > q;
+    size_t length;
 public:
+    PriorityQueue(): length(0) {}
     virtual bool empty() { return q.empty(); }
-    virtual size_t size() {return q.size(); }
+    virtual size_t size() {return length; }
     virtual Job *top() { return (Job *)q.top(); }
-    virtual void push(Job *obj) {q.push(obj); }
-    virtual Job *pop() {Job *job = (Job *)q.top(); q.pop(); return job; }
+    virtual void push(Job *obj) {q.push(obj); length++; }
+    virtual Job *pop() {Job *job = (Job *)q.top(); q.pop(); length--; return job; }
     virtual void push(std::list<Job *> &q1) {
+    	length+=q1.size();
         while(!q1.empty()) {
             q.push(q1.front());
             q1.pop_front();
@@ -66,6 +73,7 @@ class TimePriorityQueue : public PriorityQueue
 public:
     TimePriorityQueue(int npart_, int blocksPerTime_): npart(npart_), blocksPerTime(blocksPerTime_) {}
     virtual void push(Job *obj) {
+    	length++;
     	obj->forder+=(obj->partID / blocksPerTime) * npart;
     	q.push(obj);
     }
