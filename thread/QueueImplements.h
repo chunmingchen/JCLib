@@ -254,7 +254,7 @@ public:
 #define CACHE_DEPTH 10
 class PrefetchQueue : public FifoQueue
 {
-    std::list<Job *> q;
+    //std::list<Job *> q;
     int mru[CACHE_DEPTH]; // most recently used
     int mru_replace_idx;
     std::list<Job *>::iterator top_it;
