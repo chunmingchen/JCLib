@@ -36,6 +36,7 @@ list(APPEND SRC_FILES
 	thread/QueueStage.cpp
 	thread/tlogDefs.cpp
 	mhd.cpp
+    file/nrrd.cpp
 	)
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
