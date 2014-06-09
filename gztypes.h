@@ -13,7 +13,7 @@
 namespace JCLib {
 
 typedef float REAL;
-#define EPS 1e-5
+const REAL EPS = 1e-5;
 
 #define CLAMP(a,b,c) ((a)<(b)?(b): (a)>(c)?(c): (a))
 
